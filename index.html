@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D 吹风机交互展示 · Vite + Three.js</title>
+  </head>
+  <body>
+    <!-- 3D 渲染画布挂载点 -->
+    <div id="viewer"></div>
+
+    <!-- 侧边控制面板挂载点（由 src/ui/ControlPanel.js 构建） -->
+    <aside id="panel"></aside>
+
+    <!-- 左下角操作提示 -->
+    <div class="hint-bar">
+      <span>🖱️ 左键拖拽 · 360° 旋转</span>
+      <span>滚轮 · 缩放</span>
+      <span>右键拖拽 · 平移</span>
+    </div>
+
+    <!-- 模型加载遮罩 -->
+    <div id="loading" class="loading-overlay" hidden>
+      <div class="loading-card">
+        <div class="spinner"></div>
+        <p id="loading-text">正在加载模型…</p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

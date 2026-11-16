@@ -1,0 +1,419 @@
+/* ============================================================
+   全局基础样式
+   ============================================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --panel-bg: rgba(255, 255, 255, 0.82);
+  --panel-border: rgba(15, 23, 42, 0.08);
+  --text-main: #1e293b;
+  --text-sub: #64748b;
+  --accent: #2563eb;
+  --accent-soft: #dbeafe;
+  --danger: #ea580c;
+  --danger-soft: #ffedd5;
+  --radius: 14px;
+  --shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+  color: var(--text-main);
+  /* 简洁浅灰背景（WebGL 渲染器背景与之同色，见 Viewer.js） */
+  background: #eef1f5;
+}
+
+#viewer {
+  position: fixed;
+  inset: 0;
+}
+
+#viewer canvas {
+  display: block;
+}
+
+/* ============================================================
+   侧边控制面板
+   ============================================================ */
+#panel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 300px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  z-index: 10;
+  background: var(--panel-bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 18px 14px;
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.panel-subtitle {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-bottom: 14px;
+}
+
+.panel-section {
+  border-top: 1px solid var(--panel-border);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+
+.panel-section h3 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ---- 开关行 ---- */
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.switch-row label {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #cbd5e1;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 3px;
+  top: 3px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease;
+}
+
+.switch input:checked + .slider {
+  background: var(--accent);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(20px);
+}
+
+/* 电源开关用暖橙强调色 */
+.switch.power-switch input:checked + .slider {
+  background: var(--danger);
+}
+
+/* ---- 滑块行 ---- */
+.slider-row {
+  padding: 8px 0 4px;
+}
+
+.slider-row .slider-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.slider-row .slider-head .value {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: #dbe2ea;
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 5px rgba(37, 99, 235, 0.45);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+input[type="range"]:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ---- 图层显隐复选框 ---- */
+.layer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 10px;
+}
+
+.layer-grid label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.layer-grid input {
+  accent-color: var(--accent);
+}
+
+/* ---- GLB 模型加载 ---- */
+.model-input {
+  width: 100%;
+  font-size: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--panel-border);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--text-main);
+  outline: none;
+}
+
+.model-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+button.btn {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 10px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.1s ease;
+}
+
+button.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-ghost {
+  background: #f1f5f9;
+  color: var(--text-main);
+}
+
+.btn-ghost:hover {
+  background: #e2e8f0;
+}
+
+.model-tip {
+  font-size: 11.5px;
+  color: var(--text-sub);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+/* ---- 运行状态徽章 ---- */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.status-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.status-badge.off {
+  background: #f1f5f9;
+  color: var(--text-sub);
+}
+
+.status-badge.on {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.status-badge.on .dot {
+  background: var(--danger);
+  box-shadow: 0 0 8px var(--danger);
+  animation: blink 1s ease-in-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ============================================================
+   左下角操作提示
+   ============================================================ */
+.hint-bar {
+  position: fixed;
+  left: 20px;
+  bottom: 18px;
+  z-index: 10;
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--text-sub);
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 8px 16px;
+  box-shadow: var(--shadow);
+}
+
+/* ============================================================
+   加载遮罩
+   ============================================================ */
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(238, 241, 245, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.loading-overlay[hidden] {
+  display: none;
+}
+
+.loading-card {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 26px 34px;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+.loading-card p {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--text-sub);
+}
+
+.spinner {
+  width: 38px;
+  height: 38px;
+  margin: 0 auto;
+  border: 4px solid var(--accent-soft);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   响应式：窄屏面板贴底
+   ============================================================ */
+@media (max-width: 720px) {
+  #panel {
+    top: auto;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    max-height: 46vh;
+  }
+
+  .hint-bar {
+    display: none;
+  }
+}
